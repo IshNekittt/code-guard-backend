@@ -30,7 +30,7 @@ export function setupServer() {
 
   app.use(indexRouter);
 
-  app.use('*', notFoundHandler);
+  app.use(notFoundHandler);
 
   app.use(errorHandler);
 
