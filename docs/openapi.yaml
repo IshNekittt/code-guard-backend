@@ -1,20 +1,23 @@
 # openapi: 3.1.0
 info:
   version: 1.0.0
-  title: Contacts app
+  title: Money Guard
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
-  # description:
+  description: Expense tracking app
 tags:
-  # - name:
-  #   description:
+   - name: Money Guard
+     description: Operations about transaction
   - name: Auth
     description: Auth operations.
 # servers:
 #   - url:
 #   - url:
-# paths:
+  paths:
+    /auth/login:
+     post:
+       $ref: ../swagger/paths/auth/login.yaml
 
 components:
   securitySchemes:
