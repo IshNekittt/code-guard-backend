@@ -1,20 +1,24 @@
 import express from 'express';
 import pino from 'pino-http';
 import cors from 'cors';
-import 'dotenv/config';
 import cookieParser from 'cookie-parser';
+import dotenv from 'dotenv';
 
 import { getEnvVar } from './utils/getEnvVar.js';
-
 import indexRouter from './routers/index.js';
-
 import { errorHandler } from './middlewares/errorHandler.js';
 import { notFoundHandler } from './middlewares/notFoundHandler.js';
+import sidebarRoutes from './routers/sidebar.js';
+import { swaggerConfig } from './middlewares/swaggerConfig.js';
 
-export function setupServer() {
+dotenv.config();
+
+export async function setupServer() {
   const PORT = Number(getEnvVar('PORT', '3000'));
-
   const app = express();
+
+  const swagger = await swaggerConfig();
+  app.use('/api-docs', ...swagger);
 
   app.use(cors());
   app.use(express.json());
@@ -29,12 +33,13 @@ export function setupServer() {
   );
 
   app.use(indexRouter);
+  app.use('/api/sidebar', sidebarRoutes);
 
   app.use(notFoundHandler);
-
   app.use(errorHandler);
 
   app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+    console.log(`🚀 Server is running on port ${PORT}`);
+    console.log(`📚 Swagger docs available at http://localhost:${PORT}/api-docs`);
   });
 }
