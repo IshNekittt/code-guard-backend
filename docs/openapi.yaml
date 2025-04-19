@@ -11,11 +11,15 @@ tags:
   #   description:
   - name: Auth
     description: Auth operations.
-# servers:
+  - name: Transactions
+    description: Transaction operations.
+servers:
+  - url: http://localhost:3000
 #   - url:
-#   - url:
-# paths:
-
+paths:
+  /transactions:
+    get:
+      $ref: ../swagger/paths/transactions/get.yaml
 components:
   securitySchemes:
     bearerAuth:
