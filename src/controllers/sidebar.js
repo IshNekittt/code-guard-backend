@@ -15,10 +15,21 @@ export const getBalance = async (req, res, next) => {
 
 import axios from 'axios';
 
+import axios from 'axios';
+
+const fallbackRates = {
+  USD: { purchase: 27.55, sale: 27.65 },
+  EUR: { purchase: 30.0, sale: 30.1 },
+};
+
 export const getExchangeRates = async (req, res) => {
+
+  if (process.env.NODE_ENV === 'development') {
+    return res.status(200).json(fallbackRates);
+  }
+
   try {
     const { data } = await axios.get('https://api.monobank.ua/bank/currency');
-
 
     const filtered = data.filter(
       (item) =>
@@ -37,10 +48,11 @@ export const getExchangeRates = async (req, res) => {
 
     res.status(200).json(result);
   } catch (error) {
-    console.error('Monobank API error:', error.message);
-    res.status(500).json({ message: 'Failed to fetch rates from Monobank' });
+    console.error('Monobank API error, using fallback:', error.message);
+    res.status(200).json(fallbackRates);
   }
 };
+
 
 
 export const getChartData = (req, res) => {
