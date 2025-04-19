@@ -27,104 +27,13 @@ paths:
       $ref: ../swagger/paths/transactions/get.yaml
 
   /api/sidebar/balance:
-    get:
-      tags:
-        - Sidebar
-      summary: Get user balance
-      responses:
-        200:
-          description: Balance retrieved
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  balance:
-                    type: number
-                    example: 0.00
-
-    patch:
-      tags:
-        - Sidebar
-      summary: Update user balance
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - amount
-              properties:
-                amount:
-                  type: number
-                  example: 10000
-      responses:
-        200:
-          description: Balance updated
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  balance:
-                    type: number
-                    example: 10000
-        400:
-          description: Invalid data (amount must be a number)
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: The "amount" field must be a number
+    $ref: ../swagger/paths/sidebar/balance.yaml
 
   /api/sidebar/exchange-rates:
-    get:
-      tags:
-        - Sidebar
-      summary: Get exchange rates
-      responses:
-        200:
-          description: Exchange rates
-          content:
-            application/json:
-              schema:
-                type: object
-                example:
-                  USD:
-                    purchase: 27.55
-                    sale: 27.65
-                  EUR:
-                    purchase: 30.00
-                    sale: 30.10
+    $ref: ../swagger/paths/sidebar/exchange-rates.yaml
 
   /api/sidebar/chart:
-    get:
-      tags:
-        - Sidebar
-      summary: Get chart data
-      responses:
-        200:
-          description: Chart data
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  points:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        currency:
-                          type: string
-                          example: USD
-                        value:
-                          type: number
-                          example: 27.55
+    $ref: ../swagger/paths/sidebar/chart.yaml
 
 components:
   securitySchemes:
@@ -132,3 +41,11 @@ components:
       type: http
       scheme: bearer
       bearerFormat: JWT
+
+  schemas:
+    Balance:
+      $ref: ../swagger/components/schemas/sidebar/Balance.yaml
+    ExchangeRates:
+      $ref: ../swagger/components/schemas/sidebar/ExchangeRates.yaml
+    Chart:
+      $ref: ../swagger/components/schemas/sidebar/Chart.yaml

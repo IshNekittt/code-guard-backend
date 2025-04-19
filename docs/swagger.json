@@ -18,7 +18,11 @@
   "tags": [
     {
       "name": "Auth",
-      "description": "Auth operations"
+      "description": "Auth operations."
+    },
+    {
+      "name": "Transactions",
+      "description": "Transaction operations."
     },
     {
       "name": "Sidebar",
@@ -26,6 +30,65 @@
     }
   ],
   "paths": {
+    "/transactions": {
+      "get": {
+        "tags": [
+          "Transactions"
+        ],
+        "summary": "Get all transactions",
+        "description": "Get list of transactions with this endpoint",
+        "operationId": "getAllTransactions",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get all transactions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "message",
+                    "data"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Successfully found transactions!"
+                    },
+                    "data": {
+                      "type": "object",
+                      "required": [
+                        "data"
+                      ],
+                      "properties": {
+                        "data": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/transaction"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          }
+        }
+      }
+    },
     "/api/sidebar/balance": {
       "get": {
         "tags": [
@@ -38,16 +101,16 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "balance": {
-                      "type": "number",
-                      "example": 0
-                    }
-                  }
+                  "$ref": "#/components/schemas/Balance"
                 }
               }
             }
+          },
+          "401": {
+            "$ref": "#/components/responses/401-2"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
           }
         }
       },
@@ -81,32 +144,19 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "balance": {
-                      "type": "number",
-                      "example": 10000
-                    }
-                  }
+                  "$ref": "#/components/schemas/Balance"
                 }
               }
             }
           },
           "400": {
-            "description": "Invalid data (amount must be a number)",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string",
-                      "example": "The \"amount\" field must be a number"
-                    }
-                  }
-                }
-              }
-            }
+            "401": {
+              "$ref": "../../components/responses/SidebarResponses/401.yaml"
+            },
+            "500": {
+              "$ref": "../../components/responses/SidebarResponses/500.yaml"
+            },
+            "$ref": "#/components/responses/400"
           }
         }
       }
@@ -123,20 +173,16 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "example": {
-                    "USD": {
-                      "purchase": 27.55,
-                      "sale": 27.65
-                    },
-                    "EUR": {
-                      "purchase": 30,
-                      "sale": 30.1
-                    }
-                  }
+                  "$ref": "#/components/schemas/ExchangeRates"
                 }
               }
             }
+          },
+          "401": {
+            "$ref": "#/components/responses/401-2"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
           }
         }
       }
@@ -153,28 +199,16 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "points": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "currency": {
-                            "type": "string",
-                            "example": "USD"
-                          },
-                          "value": {
-                            "type": "number",
-                            "example": 27.55
-                          }
-                        }
-                      }
-                    }
-                  }
+                  "$ref": "#/components/schemas/Chart"
                 }
               }
             }
+          },
+          "401": {
+            "$ref": "#/components/responses/401-2"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
           }
         }
       }
@@ -186,6 +220,247 @@
         "type": "http",
         "scheme": "bearer",
         "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "Balance": {
+        "type": "object",
+        "properties": {
+          "balance": {
+            "type": "number",
+            "example": 0
+          }
+        }
+      },
+      "ExchangeRates": {
+        "type": "object",
+        "example": {
+          "USD": {
+            "purchase": 27.55,
+            "sale": 27.65
+          },
+          "EUR": {
+            "purchase": 30,
+            "sale": 30.1
+          }
+        }
+      },
+      "Chart": {
+        "type": "object",
+        "properties": {
+          "points": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "currency": {
+                  "type": "string",
+                  "example": "USD"
+                },
+                "value": {
+                  "type": "number",
+                  "example": 27.55
+                }
+              }
+            }
+          }
+        }
+      },
+      "transaction": {
+        "title": "Transaction",
+        "type": "object",
+        "required": [
+          "_id",
+          "userId",
+          "type",
+          "category",
+          "date",
+          "summ"
+        ],
+        "properties": {
+          "_id": {
+            "description": "Transaction's id",
+            "type": "string",
+            "example": "65e4decdd286b30065d54af9"
+          },
+          "userId": {
+            "description": "Transaction's user id",
+            "type": "string",
+            "example": "65e4decdd286b30065d54af9"
+          },
+          "type": {
+            "description": "Transaction's type",
+            "type": "string",
+            "enum": [
+              "-",
+              "+"
+            ],
+            "example": "+"
+          },
+          "category": {
+            "description": "Transaction's category",
+            "type": "string",
+            "enum": [
+              "Main expenses",
+              "Products",
+              "Car",
+              "Self care",
+              "Child care",
+              "Household products",
+              "Education",
+              "Leisure",
+              "Other expenses",
+              "Entertainment"
+            ],
+            "example": "Main expenses"
+          },
+          "date": {
+            "description": "Transaction's date",
+            "type": "date",
+            "example": "2025-04-19"
+          },
+          "summ": {
+            "description": "Transaction's sum",
+            "type": "number",
+            "example": 1000
+          },
+          "comment": {
+            "description": "Comment to transaction",
+            "type": "string",
+            "example": "Oil"
+          }
+        }
+      }
+    },
+    "responses": {
+      "400": {
+        "description": "Bad request",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": [
+                "status",
+                "message",
+                "data"
+              ],
+              "properties": {
+                "status": {
+                  "type": "integer",
+                  "example": 400
+                },
+                "message": {
+                  "type": "string",
+                  "example": "\"amount\" must be a number"
+                },
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "message": {
+                        "type": "string",
+                        "example": "\"amount\" must be a number"
+                      },
+                      "path": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "example": "amount"
+                        }
+                      },
+                      "type": {
+                        "type": "string",
+                        "example": "number.base"
+                      },
+                      "context": {
+                        "type": "object",
+                        "additionalProperties": true
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "401": {
+        "description": "Unauthorized error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": [
+                "status",
+                "message",
+                "data"
+              ],
+              "properties": {
+                "status": {
+                  "type": "integer",
+                  "example": 401
+                },
+                "message": {
+                  "type": "string",
+                  "example": "UnauthorizedError"
+                },
+                "data": {
+                  "type": "object",
+                  "required": [
+                    "message"
+                  ],
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Access token expired"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "500": {
+        "description": "Internal server error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "integer",
+                  "example": 500
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Something went wrong on the server"
+                }
+              }
+            }
+          }
+        }
+      },
+      "401-2": {
+        "description": "Unauthorized",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "integer",
+                  "example": 401
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Unauthorized access"
+                }
+              }
+            }
+          }
+        }
       }
     }
   }
