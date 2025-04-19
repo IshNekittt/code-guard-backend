@@ -1,0 +1,15 @@
+get:
+  tags:
+    - Sidebar
+  summary: Get exchange rates
+  responses:
+    200:
+      description: Exchange rates
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/sidebar/ExchangeRates.yaml
+    401:
+      $ref: '../../components/responses/SidebarResponses/401.yaml'
+    500:
+      $ref: '../../components/responses/SidebarResponses/500.yaml'

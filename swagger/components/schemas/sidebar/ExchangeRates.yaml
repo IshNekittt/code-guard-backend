@@ -1,0 +1,8 @@
+type: object
+example:
+  USD:
+    purchase: 27.55
+    sale: 27.65
+  EUR:
+    purchase: 30.00
+    sale: 30.10

@@ -43,7 +43,7 @@ properties:
     type: date
     example: '2025-04-19'
   summ:
-    description: 'Transaction's sum'
+    description: "Transaction's sum"
     type: number
     example: 1000
   comment:

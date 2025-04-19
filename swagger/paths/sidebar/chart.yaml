@@ -1,0 +1,15 @@
+get:
+  tags:
+    - Sidebar
+  summary: Get chart data
+  responses:
+    200:
+      description: Chart data
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/sidebar/Chart.yaml
+    401:
+      $ref: '../../components/responses/SidebarResponses/401.yaml'
+    500:
+      $ref: '../../components/responses/SidebarResponses/500.yaml'
