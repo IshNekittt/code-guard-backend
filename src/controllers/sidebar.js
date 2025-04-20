@@ -1,9 +1,9 @@
-import Balance from "../db/models/balance.js";
+import axios from 'axios';
+import Balance from '../db/models/balance.js';
 
 export const getBalance = async (req, res, next) => {
   try {
     const balanceDoc = await Balance.findOne();
-
 
     const amount = balanceDoc?.amount ?? 0;
 
@@ -13,17 +13,12 @@ export const getBalance = async (req, res, next) => {
   }
 };
 
-import axios from 'axios';
-
-import axios from 'axios';
-
 const fallbackRates = {
   USD: { purchase: 27.55, sale: 27.65 },
   EUR: { purchase: 30.0, sale: 30.1 },
 };
 
 export const getExchangeRates = async (req, res) => {
-
   if (process.env.NODE_ENV === 'development') {
     return res.status(200).json(fallbackRates);
   }
@@ -34,7 +29,7 @@ export const getExchangeRates = async (req, res) => {
     const filtered = data.filter(
       (item) =>
         (item.currencyCodeA === 840 || item.currencyCodeA === 978) &&
-        item.currencyCodeB === 980
+        item.currencyCodeB === 980,
     );
 
     const result = {};
@@ -53,8 +48,6 @@ export const getExchangeRates = async (req, res) => {
   }
 };
 
-
-
 export const getChartData = (req, res) => {
   res.json({
     points: [
@@ -64,13 +57,14 @@ export const getChartData = (req, res) => {
   });
 };
 
-
 export const updateBalance = async (req, res, next) => {
   try {
     const { amount } = req.body;
 
     if (typeof amount !== 'number') {
-      return res.status(400).json({ message: 'The "amount" field must be a number' });
+      return res
+        .status(400)
+        .json({ message: 'The "amount" field must be a number' });
     }
 
     let balanceDoc = await Balance.findOne();
