@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
   version: 1.0.0
   title: Code Guard API
-  description: |
+  description:
     API documentation for the Code Guard project.
     Contains endpoints for authentication, sidebar data, transactions, etc.
   license:
@@ -34,7 +34,6 @@ paths:
 
   /api/sidebar/chart:
     $ref: ../swagger/paths/sidebar/chart.yaml
-
 components:
   securitySchemes:
     bearerAuth:
