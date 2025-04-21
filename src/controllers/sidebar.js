@@ -1,11 +1,7 @@
-<<<<<<< HEAD
+
 import Balance from "../db/models/balance.js";
 import axios from 'axios';
-=======
-import axios from 'axios';
-import Balance from '../db/models/balance.js';
 
->>>>>>> main
 export const getBalance = async (req, res, next) => {
   try {
     const balanceDoc = await Balance.findOne();
