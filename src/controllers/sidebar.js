@@ -1,5 +1,5 @@
 import Balance from "../db/models/balance.js";
-
+import axios from 'axios';
 export const getBalance = async (req, res, next) => {
   try {
     const balanceDoc = await Balance.findOne();
@@ -13,9 +13,6 @@ export const getBalance = async (req, res, next) => {
   }
 };
 
-import axios from 'axios';
-
-import axios from 'axios';
 
 const fallbackRates = {
   USD: { purchase: 27.55, sale: 27.65 },
