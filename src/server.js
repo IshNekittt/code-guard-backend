@@ -20,7 +20,25 @@ export async function setupServer() {
   const swagger = await swaggerConfig();
   app.use('/api-docs', ...swagger);
 
-  app.use(cors());
+  const allowedOrigins = [
+    'http://localhost:3000',
+    'http://localhost:5173',
+    'https://code-guard-frontend.vercel.app',
+  ];
+
+  app.use(
+    cors({
+      origin: (origin, callback) => {
+        if (!origin || allowedOrigins.includes(origin)) {
+          callback(null, true);
+        } else {
+          callback(new Error('Not allowed by CORS'));
+        }
+      },
+      credentials: true,
+    }),
+  );
+
   app.use(express.json());
   app.use(cookieParser());
 
@@ -40,6 +58,8 @@ export async function setupServer() {
 
   app.listen(PORT, () => {
     console.log(`🚀 Server is running on port ${PORT}`);
-    console.log(`📚 Swagger docs available at http://localhost:${PORT}/api-docs`);
+    console.log(
+      `📚 Swagger docs available at http://localhost:${PORT}/api-docs`,
+    );
   });
 }
