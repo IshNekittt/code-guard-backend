@@ -105,3 +105,10 @@ export const resetPassword = async ({ token, password }) => {
   );
   await SessionsCollection.findOneAndDelete({ userId: user._id });
 };
+
+
+export const statisticsServices = async ({ userId }) => {
+  const transaction = await Transaction.find({ userId }, '-createdAt -updatedAt');
+
+  return transaction
+};
