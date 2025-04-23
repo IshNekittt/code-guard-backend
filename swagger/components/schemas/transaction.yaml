@@ -40,13 +40,14 @@ properties:
     example: 'Main expenses'
   date:
     description: "Transaction's date"
-    type: date
+    type: string
+    format: date
     example: '2025-04-19'
   summ:
     description: "Transaction's sum"
     type: number
     example: 1000
   comment:
-    description: "Comment to transaction"
+    description: 'Comment to transaction'
     type: string
     example: 'Oil'
