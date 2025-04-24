@@ -3,7 +3,7 @@
   "info": {
     "version": "1.0.0",
     "title": "Code Guard API",
-    "description": "API documentation for the Code Guard project. Contains endpoints for authentication, sidebar data, transactions, etc.",
+    "description": "API documentation for the Code Guard project. Contains endpoints for authentication, sidebar data, transactions, etc.\n",
     "license": {
       "name": "Apache 2.0",
       "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
@@ -116,47 +116,16 @@
         }
       }
     },
-    "/sidebar/balance": {
-      "get": {
-        "tags": [
-          "Sidebar"
-        ],
-        "summary": "Get user balance",
-        "responses": {
-          "200": {
-            "description": "User balance successfully retrieved",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "balance": {
-                      "type": "number",
-                      "example": 10000
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "401": {
-            "$ref": "#/components/responses/401-2"
-          },
-          "500": {
-            "$ref": "#/components/responses/500"
-          }
-        }
-      }
-    },
     "/sidebar/exchange-rates": {
       "get": {
         "tags": [
           "Sidebar"
         ],
-        "summary": "Get exchange rates",
+        "summary": "Get exchange rates from Monobank",
+        "description": "Returns current exchange rates for USD and EUR from Monobank API.",
         "responses": {
           "200": {
-            "description": "Exchange rates",
+            "description": "Exchange rates retrieved successfully",
             "content": {
               "application/json": {
                 "schema": {
@@ -165,10 +134,16 @@
               }
             }
           },
+          "400": {
+            "description": "Bad request",
+            "$ref": "#/components/responses/400"
+          },
           "401": {
+            "description": "Unauthorized",
             "$ref": "#/components/responses/401-2"
           },
           "500": {
+            "description": "Internal server error",
             "$ref": "#/components/responses/500"
           }
         }
@@ -180,10 +155,10 @@
           "Sidebar"
         ],
         "summary": "Get chart data (currency trend)",
-        "description": "Returns current currency exchange rates for chart visualization (e.g. USD, EUR to UAH).",
+        "description": "Returns currency chart data from Monobank for visual trend display.",
         "responses": {
           "200": {
-            "description": "Successful response with chart data",
+            "description": "Chart points successfully retrieved",
             "content": {
               "application/json": {
                 "schema": {
@@ -192,10 +167,16 @@
               }
             }
           },
+          "400": {
+            "description": "Bad request",
+            "$ref": "#/components/responses/400"
+          },
           "401": {
+            "description": "Unauthorized",
             "$ref": "#/components/responses/401-2"
           },
           "500": {
+            "description": "Internal server error",
             "$ref": "#/components/responses/500"
           }
         }
@@ -211,25 +192,38 @@
       }
     },
     "schemas": {
-      "Balance": {
-        "type": "object",
-        "properties": {
-          "balance": {
-            "type": "number",
-            "example": 0
-          }
-        }
-      },
       "ExchangeRates": {
         "type": "object",
-        "example": {
+        "properties": {
           "USD": {
-            "purchase": 27.55,
-            "sale": 27.65
+            "type": "object",
+            "properties": {
+              "purchase": {
+                "type": "number",
+                "format": "float",
+                "example": 27.55
+              },
+              "sale": {
+                "type": "number",
+                "format": "float",
+                "example": 27.65
+              }
+            }
           },
           "EUR": {
-            "purchase": 30,
-            "sale": 30.1
+            "type": "object",
+            "properties": {
+              "purchase": {
+                "type": "number",
+                "format": "float",
+                "example": 30
+              },
+              "sale": {
+                "type": "number",
+                "format": "float",
+                "example": 30.1
+              }
+            }
           }
         }
       },
@@ -323,6 +317,58 @@
       }
     },
     "responses": {
+      "400": {
+        "description": "Bad request",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": [
+                "status",
+                "message",
+                "data"
+              ],
+              "properties": {
+                "status": {
+                  "type": "integer",
+                  "example": 400
+                },
+                "message": {
+                  "type": "string",
+                  "example": "\"amount\" must be a number"
+                },
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "message": {
+                        "type": "string",
+                        "example": "\"amount\" must be a number"
+                      },
+                      "path": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "example": "amount"
+                        }
+                      },
+                      "type": {
+                        "type": "string",
+                        "example": "number.base"
+                      },
+                      "context": {
+                        "type": "object",
+                        "additionalProperties": true
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
       "401": {
         "description": "Unauthorized error",
         "content": {

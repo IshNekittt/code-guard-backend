@@ -2,8 +2,9 @@ openapi: 3.0.3
 info:
   version: 1.0.0
   title: Code Guard API
-  description: API documentation for the Code Guard project.
-    Contains endpoints for authentication, sidebar data, transactions, etc.
+  description: >
+    API documentation for the Code Guard project. Contains endpoints for authentication,
+    sidebar data, transactions, etc.
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
@@ -29,14 +30,13 @@ paths:
     get:
       $ref: ../swagger/paths/transactions/get.yaml
 
-  /sidebar/balance:
-    $ref: ../swagger/paths/sidebar/balance.yaml
-
   /sidebar/exchange-rates:
-    $ref: ../swagger/paths/sidebar/exchange-rates.yaml
+    get:
+      $ref: ../swagger/paths/sidebar/exchange-rates.yaml
 
   /sidebar/chart:
-    $ref: ../swagger/paths/sidebar/chart.yaml
+    get:
+      $ref: ../swagger/paths/sidebar/chart.yaml
 
 components:
   securitySchemes:
@@ -46,8 +46,6 @@ components:
       bearerFormat: JWT
 
   schemas:
-    Balance:
-      $ref: ../swagger/components/schemas/sidebar/Balance.yaml
     ExchangeRates:
       $ref: ../swagger/components/schemas/sidebar/ExchangeRates.yaml
     Chart:
