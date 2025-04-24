@@ -29,13 +29,13 @@ paths:
     get:
       $ref: ../swagger/paths/transactions/get.yaml
 
-  /api/sidebar/balance:
+  /sidebar/balance:
     $ref: ../swagger/paths/sidebar/balance.yaml
 
-  /api/sidebar/exchange-rates:
+  /sidebar/exchange-rates:
     $ref: ../swagger/paths/sidebar/exchange-rates.yaml
 
-  /api/sidebar/chart:
+  /sidebar/chart:
     $ref: ../swagger/paths/sidebar/chart.yaml
 
 components:

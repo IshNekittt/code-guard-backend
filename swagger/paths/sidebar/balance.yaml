@@ -4,42 +4,18 @@ get:
   summary: Get user balance
   responses:
     200:
-      description: Balance retrieved
+      description: User balance successfully retrieved
       content:
         application/json:
           schema:
-            $ref: ../../components/schemas/sidebar/Balance.yaml
+            type: object
+            properties:
+              balance:
+                type: number
+                example: 10000
     401:
       $ref: '../../components/responses/SidebarResponses/401.yaml'
     500:
       $ref: '../../components/responses/SidebarResponses/500.yaml'
 
-patch:
-  tags:
-    - Sidebar
-  summary: Update user balance
-  requestBody:
-    required: true
-    content:
-      application/json:
-        schema:
-          type: object
-          required:
-            - amount
-          properties:
-            amount:
-              type: number
-              example: 10000
-  responses:
-    200:
-      description: Balance updated
-      content:
-        application/json:
-          schema:
-            $ref: '../../components/schemas/sidebar/Balance.yaml'
-    400:
-      $ref: '../../components/responses/SidebarResponses/400.yaml'
-      401:
-        $ref: '../../components/responses/SidebarResponses/401.yaml'
-      500:
-        $ref: '../../components/responses/SidebarResponses/500.yaml'
+

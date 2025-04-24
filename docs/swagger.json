@@ -116,7 +116,7 @@
         }
       }
     },
-    "/api/sidebar/balance": {
+    "/sidebar/balance": {
       "get": {
         "tags": [
           "Sidebar"
@@ -124,11 +124,17 @@
         "summary": "Get user balance",
         "responses": {
           "200": {
-            "description": "Balance retrieved",
+            "description": "User balance successfully retrieved",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Balance"
+                  "type": "object",
+                  "properties": {
+                    "balance": {
+                      "type": "number",
+                      "example": 10000
+                    }
+                  }
                 }
               }
             }
@@ -140,55 +146,9 @@
             "$ref": "#/components/responses/500"
           }
         }
-      },
-      "patch": {
-        "tags": [
-          "Sidebar"
-        ],
-        "summary": "Update user balance",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": [
-                  "amount"
-                ],
-                "properties": {
-                  "amount": {
-                    "type": "number",
-                    "example": 10000
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Balance updated",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Balance"
-                }
-              }
-            }
-          },
-          "400": {
-            "401": {
-              "$ref": "../../components/responses/SidebarResponses/401.yaml"
-            },
-            "500": {
-              "$ref": "../../components/responses/SidebarResponses/500.yaml"
-            },
-            "$ref": "#/components/responses/400"
-          }
-        }
       }
     },
-    "/api/sidebar/exchange-rates": {
+    "/sidebar/exchange-rates": {
       "get": {
         "tags": [
           "Sidebar"
@@ -214,7 +174,7 @@
         }
       }
     },
-    "/api/sidebar/chart": {
+    "/sidebar/chart": {
       "get": {
         "tags": [
           "Sidebar"
@@ -361,58 +321,6 @@
       }
     },
     "responses": {
-      "400": {
-        "description": "Bad request",
-        "content": {
-          "application/json": {
-            "schema": {
-              "type": "object",
-              "required": [
-                "status",
-                "message",
-                "data"
-              ],
-              "properties": {
-                "status": {
-                  "type": "integer",
-                  "example": 400
-                },
-                "message": {
-                  "type": "string",
-                  "example": "\"amount\" must be a number"
-                },
-                "data": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "message": {
-                        "type": "string",
-                        "example": "\"amount\" must be a number"
-                      },
-                      "path": {
-                        "type": "array",
-                        "items": {
-                          "type": "string",
-                          "example": "amount"
-                        }
-                      },
-                      "type": {
-                        "type": "string",
-                        "example": "number.base"
-                      },
-                      "context": {
-                        "type": "object",
-                        "additionalProperties": true
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
       "401": {
         "description": "Unauthorized error",
         "content": {
