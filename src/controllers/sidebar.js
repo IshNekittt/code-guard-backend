@@ -50,15 +50,36 @@ export const getExchangeRates = async (req, res) => {
   }
 };
 
-// ✅ Тестові дані для графіку
-export const getChartData = (req, res) => {
-  res.status(200).json({
-    points: [
-      { currency: 'USD', value: 27.55 },
-      { currency: 'EUR', value: 30.0 },
-    ],
-  });
+// ✅ Дані для графіка з Monobank
+export const getChartData = async (req, res) => {
+  try {
+    const { data } = await axios.get('https://api.monobank.ua/bank/currency');
+
+    const filtered = data.filter(
+      item =>
+        (item.currencyCodeA === 840 || item.currencyCodeA === 978) &&
+        item.currencyCodeB === 980
+    );
+
+    const result = filtered.map(item => ({
+      currency: item.currencyCodeA === 840 ? 'USD' : 'EUR',
+      value: item.rateBuy ?? item.rateCross ?? 0,
+    }));
+
+    res.status(200).json({ points: result });
+  } catch (error) {
+    console.error('Failed to fetch chart data from Monobank:', error.message);
+
+    // 🔁 У разі помилки — можна віддати заглушку:
+    res.status(200).json({
+      points: [
+        { currency: 'USD', value: 27.55 },
+        { currency: 'EUR', value: 30.0 },
+      ],
+    });
+  }
 };
+
 
 // ✅ Оновлення балансу користувача
 export const updateBalance = async (req, res, next) => {
@@ -85,3 +106,6 @@ export const updateBalance = async (req, res, next) => {
     next(error);
   }
 };
+
+
+

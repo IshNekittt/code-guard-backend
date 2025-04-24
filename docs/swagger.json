@@ -179,10 +179,11 @@
         "tags": [
           "Sidebar"
         ],
-        "summary": "Get chart data",
+        "summary": "Get chart data (currency trend)",
+        "description": "Returns current currency exchange rates for chart visualization (e.g. USD, EUR to UAH).",
         "responses": {
           "200": {
-            "description": "Chart data",
+            "description": "Successful response with chart data",
             "content": {
               "application/json": {
                 "schema": {
@@ -246,6 +247,7 @@
                 },
                 "value": {
                   "type": "number",
+                  "format": "float",
                   "example": 27.55
                 }
               }
