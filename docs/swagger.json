@@ -3,7 +3,7 @@
   "info": {
     "version": "1.0.0",
     "title": "Code Guard API",
-    "description": "API documentation for the Code Guard project.\nContains endpoints for authentication, sidebar data, transactions, etc.\n",
+    "description": "API documentation for the Code Guard project. Contains endpoints for authentication, sidebar data, transactions, etc.",
     "license": {
       "name": "Apache 2.0",
       "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
@@ -30,6 +30,33 @@
     }
   ],
   "paths": {
+    "/auth/logout": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Logout",
+        "description": "Log out a user",
+        "operationId": "logout",
+        "security": [],
+        "responses": {
+          "204": {
+            "description": "Logouts the user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          }
+        }
+      }
+    },
     "/transactions": {
       "get": {
         "tags": [
@@ -316,7 +343,8 @@
           },
           "date": {
             "description": "Transaction's date",
-            "type": "date",
+            "type": "string",
+            "format": "date",
             "example": "2025-04-19"
           },
           "summ": {
