@@ -2,8 +2,7 @@ openapi: 3.0.3
 info:
   version: 1.0.0
   title: Code Guard API
-  description:
-    API documentation for the Code Guard project.
+  description: API documentation for the Code Guard project.
     Contains endpoints for authentication, sidebar data, transactions, etc.
   license:
     name: Apache 2.0
@@ -22,6 +21,10 @@ tags:
     description: Data for displaying in the sidebar
 
 paths:
+  /auth/logout:
+    post:
+      $ref: ../swagger/paths/auth/logout.yaml
+
   /transactions:
     get:
       $ref: ../swagger/paths/transactions/get.yaml
@@ -34,6 +37,7 @@ paths:
 
   /api/sidebar/chart:
     $ref: ../swagger/paths/sidebar/chart.yaml
+
 components:
   securitySchemes:
     bearerAuth:
