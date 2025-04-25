@@ -23,6 +23,13 @@ tags:
     description: Data for displaying in the sidebar
 
 paths:
+  /auth/login:
+    post:
+      $ref: ../swagger/paths/auth/login.yaml
+  /auth/refresh:
+    post:
+      $ref: ../swagger/paths/auth/refresh.yaml
+
   /auth/logout:
     post:
       $ref: ../swagger/paths/auth/logout.yaml
