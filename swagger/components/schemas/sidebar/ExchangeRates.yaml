@@ -1,8 +1,24 @@
 type: object
-example:
+properties:
   USD:
-    purchase: 27.55
-    sale: 27.65
+    type: object
+    properties:
+      purchase:
+        type: number
+        format: float
+        example: 27.55
+      sale:
+        type: number
+        format: float
+        example: 27.65
   EUR:
-    purchase: 30.00
-    sale: 30.10
+    type: object
+    properties:
+      purchase:
+        type: number
+        format: float
+        example: 30.00
+      sale:
+        type: number
+        format: float
+        example: 30.10

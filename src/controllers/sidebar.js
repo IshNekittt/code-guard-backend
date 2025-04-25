@@ -1,23 +1,31 @@
 import axios from 'axios';
-import Balance from '../db/models/balance.js';
+import { UsersCollection } from '../db/models/user.js';
 
-export const getBalance = async (req, res, next) => {
-  try {
-    const balanceDoc = await Balance.findOne();
 
-    const amount = balanceDoc?.amount ?? 0;
 
-    res.status(200).json({ balance: amount });
-  } catch (err) {
-    next(err);
-  }
-};
-
+// Заглушка для валют
 const fallbackRates = {
   USD: { purchase: 27.55, sale: 27.65 },
   EUR: { purchase: 30.0, sale: 30.1 },
 };
 
+// Баланс користувача з моделі User
+export const getBalance = async (req, res, next) => {
+  try {
+    const userId = req.user?.id; // Перевірка авторизації
+    const user = await UsersCollection.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.status(200).json({ balance: user.balance ?? 0 });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// Дані з Monobank або заглушка
 export const getExchangeRates = async (req, res) => {
   if (process.env.NODE_ENV === 'development') {
     return res.status(200).json(fallbackRates);
@@ -29,7 +37,7 @@ export const getExchangeRates = async (req, res) => {
     const filtered = data.filter(
       (item) =>
         (item.currencyCodeA === 840 || item.currencyCodeA === 978) &&
-        item.currencyCodeB === 980,
+        item.currencyCodeB === 980
     );
 
     const result = {};
@@ -48,36 +56,28 @@ export const getExchangeRates = async (req, res) => {
   }
 };
 
-export const getChartData = (req, res) => {
-  res.json({
-    points: [
-      { currency: 'USD', value: 27.55 },
-      { currency: 'EUR', value: 30.0 },
-    ],
-  });
-};
-
-export const updateBalance = async (req, res, next) => {
+// дані для графіка
+export const getChartData = async (req, res) => {
   try {
-    const { amount } = req.body;
+    const { data } = await axios.get('https://api.monobank.ua/bank/currency');
 
-    if (typeof amount !== 'number') {
-      return res
-        .status(400)
-        .json({ message: 'The "amount" field must be a number' });
-    }
+    const filtered = data.filter(
+      (item) =>
+        (item.currencyCodeA === 840 || item.currencyCodeA === 978) &&
+        item.currencyCodeB === 980
+    );
 
-    let balanceDoc = await Balance.findOne();
+    const points = filtered.map((item) => {
+      const currency = item.currencyCodeA === 840 ? 'USD' : 'EUR';
+      const value = item.rateBuy ?? item.rateCross ?? null;
 
-    if (balanceDoc) {
-      balanceDoc.amount = amount;
-      await balanceDoc.save();
-    } else {
-      balanceDoc = await Balance.create({ amount });
-    }
+      return { currency, value };
+    });
 
-    res.status(200).json({ balance: balanceDoc.amount });
+    res.status(200).json({ points });
   } catch (error) {
-    next(error);
+    console.error('Monobank API error:', error.message);
+    res.status(500).json({ message: 'Failed to fetch chart data from Monobank' });
   }
 };
+

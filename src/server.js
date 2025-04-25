@@ -51,7 +51,7 @@ export async function setupServer() {
   );
 
   app.use(indexRouter);
-  app.use('/api/sidebar', sidebarRoutes);
+  app.use('/sidebar', sidebarRoutes);
 
   app.use(notFoundHandler);
   app.use(errorHandler);

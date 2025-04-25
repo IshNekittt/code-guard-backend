@@ -1,15 +1,15 @@
 import express from 'express';
 import {
-  getBalance,
   getExchangeRates,
   getChartData,
-  updateBalance
+  getBalance,
 } from '../controllers/sidebar.js';
+import { authenticate } from '../middlewares/authenticate.js';
 
 const router = express.Router();
 
-router.get('/balance', getBalance);
-router.patch('/balance', updateBalance);
+
+router.get('/balance', authenticate, getBalance);
 router.get('/exchange-rates', getExchangeRates);
 router.get('/chart', getChartData);
 

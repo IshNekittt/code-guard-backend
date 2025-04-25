@@ -1,15 +1,20 @@
-get:
-  tags:
-    - Sidebar
-  summary: Get exchange rates
-  responses:
-    200:
-      description: Exchange rates
-      content:
-        application/json:
-          schema:
-            $ref: ../../components/schemas/sidebar/ExchangeRates.yaml
-    401:
-      $ref: '../../components/responses/SidebarResponses/401.yaml'
-    500:
-      $ref: '../../components/responses/SidebarResponses/500.yaml'
+tags:
+  - Sidebar
+summary: Get exchange rates from Monobank
+description: Returns current exchange rates for USD and EUR from Monobank API.
+operationId: getRates
+security:
+  - bearerAuth: []
+responses:
+  '200':
+    description: Exchange rates retrieved successfully
+    content:
+      application/json:
+        schema:
+          $ref: '../../components/schemas/sidebar/ExchangeRates.yaml'
+  '400':
+    $ref: '../../components/responses/SidebarResponses/400.yaml'
+  '401':
+    $ref: '../../components/responses/SidebarResponses/401.yaml'
+  '500':
+    $ref: '../../components/responses/SidebarResponses/500.yaml'
