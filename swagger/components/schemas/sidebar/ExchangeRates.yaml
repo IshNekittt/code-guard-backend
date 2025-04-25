@@ -22,4 +22,3 @@ properties:
         type: number
         format: float
         example: 30.10
-

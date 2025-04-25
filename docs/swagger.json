@@ -135,15 +135,12 @@
             }
           },
           "400": {
-            "description": "Bad request",
             "$ref": "#/components/responses/400"
           },
           "401": {
-            "description": "Unauthorized",
             "$ref": "#/components/responses/401-2"
           },
           "500": {
-            "description": "Internal server error",
             "$ref": "#/components/responses/500"
           }
         }
@@ -168,15 +165,12 @@
             }
           },
           "400": {
-            "description": "Bad request",
             "$ref": "#/components/responses/400"
           },
           "401": {
-            "description": "Unauthorized",
             "$ref": "#/components/responses/401-2"
           },
           "500": {
-            "description": "Internal server error",
             "$ref": "#/components/responses/500"
           }
         }
@@ -325,8 +319,7 @@
               "type": "object",
               "required": [
                 "status",
-                "message",
-                "data"
+                "message"
               ],
               "properties": {
                 "status": {
@@ -341,6 +334,11 @@
                   "type": "array",
                   "items": {
                     "type": "object",
+                    "required": [
+                      "message",
+                      "path",
+                      "type"
+                    ],
                     "properties": {
                       "message": {
                         "type": "string",
@@ -412,6 +410,10 @@
           "application/json": {
             "schema": {
               "type": "object",
+              "required": [
+                "status",
+                "message"
+              ],
               "properties": {
                 "status": {
                   "type": "integer",
@@ -432,6 +434,10 @@
           "application/json": {
             "schema": {
               "type": "object",
+              "required": [
+                "status",
+                "message"
+              ],
               "properties": {
                 "status": {
                   "type": "integer",

@@ -10,11 +10,8 @@ responses:
         schema:
           $ref: '../../components/schemas/sidebar/Chart.yaml'
   '400':
-    description: Bad request
     $ref: '../../components/responses/SidebarResponses/400.yaml'
   '401':
-    description: Unauthorized
     $ref: '../../components/responses/SidebarResponses/401.yaml'
   '500':
-    description: Internal server error
     $ref: '../../components/responses/SidebarResponses/500.yaml'

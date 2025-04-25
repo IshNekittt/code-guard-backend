@@ -6,7 +6,6 @@ content:
       required:
         - status
         - message
-        - data
       properties:
         status:
           type: integer
@@ -18,6 +17,10 @@ content:
           type: array
           items:
             type: object
+            required:
+              - message
+              - path
+              - type
             properties:
               message:
                 type: string
