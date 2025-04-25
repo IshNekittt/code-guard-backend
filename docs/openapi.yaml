@@ -17,6 +17,8 @@ tags:
     description: Auth operations.
   - name: Transactions
     description: Transaction operations.
+  - name: Users
+    description: User operations.
   - name: Sidebar
     description: Data for displaying in the sidebar
 
@@ -24,6 +26,10 @@ paths:
   /auth/logout:
     post:
       $ref: ../swagger/paths/auth/logout.yaml
+
+  /users/currentUser:
+    get:
+      $ref: ../swagger/paths/users/currentUser.yaml
 
   /transactions:
     get:

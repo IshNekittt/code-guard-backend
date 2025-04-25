@@ -25,3 +25,7 @@ properties:
     type: string
     example: '$2b$10$RrwIu5gPU5U04YgA6kRzqePu5CEZ4LVvXPB4dfHfrklT2bHu3U9JG'
     writeOnly: true
+  balance:
+    description: "User's balance"
+    type: number
+    example: 1200
