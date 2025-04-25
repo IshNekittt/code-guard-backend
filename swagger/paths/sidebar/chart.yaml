@@ -2,6 +2,9 @@ tags:
   - Sidebar
 summary: Get chart data (currency trend)
 description: Returns currency chart data from Monobank for visual trend display.
+operationId: getChart
+security:
+  - bearerAuth: []
 responses:
   '200':
     description: Chart points successfully retrieved

@@ -2,6 +2,9 @@ tags:
   - Sidebar
 summary: Get exchange rates from Monobank
 description: Returns current exchange rates for USD and EUR from Monobank API.
+operationId: getRates
+security:
+  - bearerAuth: []
 responses:
   '200':
     description: Exchange rates retrieved successfully

@@ -30,6 +30,9 @@ paths:
     get:
       $ref: ../swagger/paths/transactions/get.yaml
 
+  /sidebar/balance:
+    get:
+      $ref: ../swagger/paths/sidebar/balance.yaml
   /sidebar/exchange-rates:
     get:
       $ref: ../swagger/paths/sidebar/exchange-rates.yaml
@@ -43,7 +46,6 @@ components:
     bearerAuth:
       type: http
       scheme: bearer
-      bearerFormat: JWT
 
   schemas:
     ExchangeRates:
