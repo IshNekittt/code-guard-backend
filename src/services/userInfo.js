@@ -1,5 +1,5 @@
 import createHttpError from 'http-errors';
-import { UsersCollection } from '../db/models/user';
+import { UsersCollection } from '../db/models/user.js';
 
 export const getUserInfo = async (userId) => {
   const userInfo = await UsersCollection.findById(userId);

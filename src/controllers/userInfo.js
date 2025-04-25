@@ -1,4 +1,4 @@
-import { getUserInfo } from '../services/userInfo';
+import { getUserInfo } from '../services/userInfo.js';
 
 export const getUserInfoController = async (req, res) => {
   const userId = req.user._id;
