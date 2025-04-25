@@ -1,12 +1,10 @@
 import createHttpError from 'http-errors';
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
 import { randomBytes } from 'crypto';
 
 import { FIFTEEN_MINUTES, ONE_DAY } from '../constants/index.js';
 import { UsersCollection } from '../db/models/user.js';
 import { SessionsCollection } from '../db/models/session.js';
-import { getEnvVar } from '../utils/getEnvVar.js';
 
 export const registerUser = async (payload) => {
   const user = await UsersCollection.findOne({ email: payload.email });
@@ -79,36 +77,4 @@ export const refreshUser = async ({ sessionId, refreshToken }) => {
 
 export const logoutUser = async (sessionId) => {
   await SessionsCollection.deleteOne({ _id: sessionId });
-};
-
-export const resetPassword = async ({ token, password }) => {
-  let data;
-  try {
-    data = jwt.verify(token, getEnvVar('JWT_SECRET'));
-  } catch {
-    throw createHttpError(401, 'Token is expired or invalid.');
-  }
-
-  const user = await UsersCollection.findOne({
-    _id: data.sub,
-    email: data.email,
-  });
-  if (!user) throw createHttpError(404, 'User not found!');
-
-  const hashedPassword = await bcrypt.hash(password, 10);
-
-  await UsersCollection.findOneAndUpdate(
-    {
-      _id: user._id,
-    },
-    { password: hashedPassword },
-  );
-  await SessionsCollection.findOneAndDelete({ userId: user._id });
-};
-
-
-export const statisticsServices = async ({ userId }) => {
-  const transaction = await Transaction.find({ userId }, '-createdAt -updatedAt');
-
-  return transaction
 };
