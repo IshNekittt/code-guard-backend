@@ -1,10 +1,10 @@
 import { Router } from 'express';
 
 import { ctrlWrapper } from '../utils/ctrlWrapper.js';
-import { validateBody } from '../../../nodejs-hw-mongodb/src/middlewares/validateBody.js';
+import { validateBody } from '../middlewares/validateBody.js';
 
 import { authenticate } from '../middlewares/authenticate.js';
-import { isValidId } from '../../../nodejs-hw-mongodb/src/middlewares/isValidId.js';
+import { isValidId } from '../middlewares/isValidId.js';
 
 import {
   createTransactionController,
