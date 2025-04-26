@@ -17,6 +17,7 @@ import {
   createTransactionSchema,
   patchTransactionSchema,
 } from '../validation/transactions.js';
+import { getStatisticsController } from '../controllers/statistics.js';
 
 const router = Router();
 
@@ -42,5 +43,7 @@ router.delete(
   isValidId,
   ctrlWrapper(deleteTransactionController),
 );
-
+router.get('/filter/by-date'
+  , authenticate,
+  ctrlWrapper(getStatisticsController));
 export default router;
