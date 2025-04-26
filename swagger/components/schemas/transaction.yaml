@@ -20,7 +20,7 @@ properties:
     description: "Transaction's type"
     type: string
     enum: ['-', '+']
-    example: '+'
+    example: '-'
   category:
     description: "Transaction's category"
     type: string
@@ -36,13 +36,14 @@ properties:
         'Leisure',
         'Other expenses',
         'Entertainment',
+        'Income',
       ]
     example: 'Main expenses'
   date:
     description: "Transaction's date"
     type: string
     format: date
-    example: '2025-04-19'
+    example: '2025-04-26T12:00:00.000Z'
   summ:
     description: "Transaction's sum"
     type: number

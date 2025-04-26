@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
   version: 1.0.0
   title: Code Guard API
-  description: >
+  description:
     API documentation for the Code Guard project. Contains endpoints for authentication,
     sidebar data, transactions, etc.
   license:
@@ -10,8 +10,8 @@ info:
     url: http://www.apache.org/licenses/LICENSE-2.0.html
 
 servers:
-  - url: http://localhost:3000
-    description: Local development server
+  - url: https://code-guard-backend.onrender.com
+    description: Project's url
 
 tags:
   - name: Auth
@@ -24,13 +24,15 @@ tags:
     description: Data for displaying in the sidebar
 
 paths:
+  /auth/register:
+    post:
+      $ref: ../swagger/paths/auth/registration.yaml
   /auth/login:
     post:
       $ref: ../swagger/paths/auth/login.yaml
-  /auth/refresh:
-    post:
-      $ref: ../swagger/paths/auth/refresh.yaml
-
+  # /auth/refresh:
+  #   post:
+  #     $ref: ../swagger/paths/auth/refresh.yaml
   /auth/logout:
     post:
       $ref: ../swagger/paths/auth/logout.yaml
@@ -42,6 +44,15 @@ paths:
   /transactions:
     get:
       $ref: ../swagger/paths/transactions/get.yaml
+    post:
+      $ref: ../swagger/paths/transactions/post.yaml
+
+  /transactions/{id}:
+    patch:
+      $ref: ../swagger/paths/transactions/{id}/patch.yaml
+    delete:
+      $ref: ../swagger/paths/transactions/{id}/delete.yaml
+
 
   /sidebar/balance:
     get:
