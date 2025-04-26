@@ -1,0 +1,79 @@
+tags:
+  - Transactions
+summary: Create transaction
+description: 'Create a transaction with payload'
+operationId: postTransaction
+security:
+  - bearerAuth: []
+requestBody:
+  content:
+    application/json:
+      schema:
+        type: object
+        required:
+          - type
+          - category
+          - date
+          - summ
+        properties:
+          type:
+            description: "Transaction's type"
+            type: string
+            enum: ['-', '+']
+            example: '-'
+          category:
+            description: "Transaction's category"
+            type: string
+            enum:
+              [
+                'Main expenses',
+                'Products',
+                'Car',
+                'Self care',
+                'Child care',
+                'Household products',
+                'Education',
+                'Leisure',
+                'Other expenses',
+                'Entertainment',
+                'Income',
+              ]
+            example: 'Main expenses'
+          date:
+            description: "Transaction's date"
+            type: string
+            format: date
+            example: '2025-04-26T12:00:00.000Z'
+          summ:
+            description: "Transaction's sum"
+            type: number
+            example: 1000
+          comment:
+            description: 'Comment to transaction'
+            type: string
+            example: 'Oil'
+responses:
+  '201':
+    description: 'Creates a transaction'
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+            - data
+          properties:
+            status:
+              type: integer
+              example: 201
+            message:
+              type: string
+              example: Successfully created a transaction!
+            data:
+              type: object
+              $ref: ../../components/schemas/transaction.yaml
+  '400':
+    $ref: '../../components/responses/400.yaml'
+  '401':
+    $ref: '../../components/responses/401.yaml'

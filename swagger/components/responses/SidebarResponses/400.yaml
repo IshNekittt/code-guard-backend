@@ -1,0 +1,38 @@
+description: Bad request
+content:
+  application/json:
+    schema:
+      type: object
+      required:
+        - status
+        - message
+      properties:
+        status:
+          type: integer
+          example: 400
+        message:
+          type: string
+          example: '"amount" must be a number'
+        data:
+          type: array
+          items:
+            type: object
+            required:
+              - message
+              - path
+              - type
+            properties:
+              message:
+                type: string
+                example: '"amount" must be a number'
+              path:
+                type: array
+                items:
+                  type: string
+                  example: amount
+              type:
+                type: string
+                example: number.base
+              context:
+                type: object
+                additionalProperties: true

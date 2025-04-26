@@ -6,7 +6,6 @@ const transactionsSchema = new Schema(
     type: { type: String, required: true, enum: ['-', '+'] },
     category: {
       type: String,
-      required: true,
       enum: [
         'Main expenses',
         'Products',
@@ -18,7 +17,9 @@ const transactionsSchema = new Schema(
         'Leisure',
         'Other expenses',
         'Entertainment',
+        'Income',
       ],
+      default: 'Income',
     },
     date: { type: Date, required: true },
     summ: { type: Number, required: true },

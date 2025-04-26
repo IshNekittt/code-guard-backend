@@ -1,23 +1,78 @@
-# openapi: 3.1.0
+openapi: 3.0.3
 info:
   version: 1.0.0
-  title: Contacts app
+  title: Code Guard API
+  description:
+    API documentation for the Code Guard project. Contains endpoints for authentication,
+    sidebar data, transactions, etc.
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
-  # description:
+
+servers:
+  - url: https://code-guard-backend.onrender.com
+    description: Project's url
+
 tags:
-  # - name:
-  #   description:
   - name: Auth
     description: Auth operations.
-# servers:
-#   - url:
-#   - url:
-# paths:
+  - name: Transactions
+    description: Transaction operations.
+  - name: Users
+    description: User operations.
+  - name: Sidebar
+    description: Data for displaying in the sidebar
+
+paths:
+  /auth/register:
+    post:
+      $ref: ../swagger/paths/auth/registration.yaml
+  /auth/login:
+    post:
+      $ref: ../swagger/paths/auth/login.yaml
+  # /auth/refresh:
+  #   post:
+  #     $ref: ../swagger/paths/auth/refresh.yaml
+  /auth/logout:
+    post:
+      $ref: ../swagger/paths/auth/logout.yaml
+
+  /users/currentUser:
+    get:
+      $ref: ../swagger/paths/users/currentUser.yaml
+
+  /transactions:
+    get:
+      $ref: ../swagger/paths/transactions/get.yaml
+    post:
+      $ref: ../swagger/paths/transactions/post.yaml
+
+  /transactions/{id}:
+    patch:
+      $ref: ../swagger/paths/transactions/{id}/patch.yaml
+    delete:
+      $ref: ../swagger/paths/transactions/{id}/delete.yaml
+
+
+  /sidebar/balance:
+    get:
+      $ref: ../swagger/paths/sidebar/balance.yaml
+  /sidebar/exchange-rates:
+    get:
+      $ref: ../swagger/paths/sidebar/exchange-rates.yaml
+
+  /sidebar/chart:
+    get:
+      $ref: ../swagger/paths/sidebar/chart.yaml
 
 components:
   securitySchemes:
     bearerAuth:
       type: http
       scheme: bearer
+
+  schemas:
+    ExchangeRates:
+      $ref: ../swagger/components/schemas/sidebar/ExchangeRates.yaml
+    Chart:
+      $ref: ../swagger/components/schemas/sidebar/Chart.yaml

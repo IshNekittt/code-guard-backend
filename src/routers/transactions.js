@@ -1,11 +1,46 @@
 import { Router } from 'express';
-import {authenticate} from "../middlewares/authenticate.js";
+
 import { ctrlWrapper } from '../utils/ctrlWrapper.js';
-import { getStatisticsController } from '../controllers/statistics.js';
-import { getTransactionsController } from '../controllers/transactions.js';
+import { validateBody } from '../middlewares/validateBody.js';
+
+import { authenticate } from '../middlewares/authenticate.js';
+import { isValidId } from '../middlewares/isValidId.js';
+
+import {
+  createTransactionController,
+  deleteTransactionController,
+  getTransactionsController,
+  patchTransactionController,
+} from '../controllers/transactions.js';
+
+import {
+  createTransactionSchema,
+  patchTransactionSchema,
+} from '../validation/transactions.js';
 
 const router = Router();
 
-router.get('/',authenticate, ctrlWrapper(getTransactionsController));
-router.get('/filter/by-date', authenticate, ctrlWrapper(getStatisticsController));
+router.use(authenticate);
+
+router.get('/', ctrlWrapper(getTransactionsController));
+
+router.post(
+  '/',
+  validateBody(createTransactionSchema),
+  ctrlWrapper(createTransactionController),
+);
+
+router.patch(
+  '/:transactionId',
+  isValidId,
+  validateBody(patchTransactionSchema),
+  ctrlWrapper(patchTransactionController),
+);
+
+router.delete(
+  '/:transactionId',
+  isValidId,
+  ctrlWrapper(deleteTransactionController),
+);
+
 export default router;

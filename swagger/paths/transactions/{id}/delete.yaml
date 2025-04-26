@@ -1,0 +1,20 @@
+tags:
+  - Transactions
+summary: Delete transaction
+description: 'Delete transaction by id'
+operationId: deleteTransaction
+security:
+  - bearerAuth: []
+parameters:
+  - in: path
+    name: id
+    required: true
+    schema:
+      type: string
+responses:
+  '204':
+    description: 'Delete transaction by id'
+  '401':
+    $ref: '../../../components/responses/401.yaml'
+  '404':
+    $ref: '../../../components/responses/404.yaml'
