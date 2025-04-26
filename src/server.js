@@ -22,7 +22,8 @@ export async function setupServer() {
   const app = express();
   const swagger = await swaggerConfig();
     app.use('/api-docs', ...swagger);
-  app.use(cors());
+  app.use(cors({origin: 'http://localhost:5173',
+  credentials: true}));
   app.use(express.json());
   app.use(cookieParser());
 

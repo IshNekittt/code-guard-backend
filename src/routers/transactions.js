@@ -7,5 +7,5 @@ import { getTransactionsController } from '../controllers/transactions.js';
 const router = Router();
 
 router.get('/',authenticate, ctrlWrapper(getTransactionsController));
-router.get('/filter/by-date',authenticate, ctrlWrapper(getStatisticsController));
+router.get('/filter/by-date', ctrlWrapper(getStatisticsController));
 export default router;
