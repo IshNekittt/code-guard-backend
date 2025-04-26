@@ -12,12 +12,6 @@ export const FIFTEEN_MINUTES = 15 * 60 * 1000;
 
 export const ONE_DAY = 24 * 60 * 60 * 1000;
 
-export const CLOUDINARY = {
-  CLOUD_NAME: 'CLOUD_NAME',
-  API_KEY: 'API_KEY',
-  API_SECRET: 'API_SECRET',
-};
-
 export const SWAGGER_PATH = path.join(
   path.dirname(fileURLToPath(import.meta.url)),
   '..',
@@ -25,3 +19,17 @@ export const SWAGGER_PATH = path.join(
   'docs',
   'swagger.json',
 );
+
+export const INCOME_CATEGORIES = ['Incomes'];
+export const EXPENSE_CATEGORIES = [
+  'Main expenses',
+  'Products',
+  'Car',
+  'Self care',
+  'Child care',
+  'Household products',
+  'Education',
+  'Leisure',
+  'Other expenses',
+  'Entertainment',
+];

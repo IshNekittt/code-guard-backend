@@ -1,0 +1,57 @@
+tags:
+  - Categories
+summary: Get all categories
+description: 'Get the list of available categories'
+operationId: getAllTCategories
+security: []
+responses:
+  '200':
+    description: 'Get all categories'
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+            - data
+          properties:
+            status:
+              type: integer
+              example: 200
+            message:
+              type: string
+              example: Successfully found categories
+            data:
+              type: object
+              required:
+                - data
+              properties:
+                data:
+                  type: object
+                  required:
+                    - incomeCategories
+                    - expenseCategories
+                  properties:
+                    incomeCategories:
+                      description: 'The list of income categories'
+                      type: array
+                      example: ['Incomes']
+                    expenseCategories:
+                      description: 'The list of expense categories'
+                      type: array
+                      example:
+                        [
+                          'Main expenses',
+                          'Products',
+                          'Car',
+                          'Self care',
+                          'Child care',
+                          'Household products',
+                          'Education',
+                          'Leisure',
+                          'Other expenses',
+                          'Entertainment',
+                        ]
+  '404':
+    $ref: '../../components/responses/404.yaml'
