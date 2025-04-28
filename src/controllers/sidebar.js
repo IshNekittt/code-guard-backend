@@ -47,9 +47,14 @@ export const getExchangeRates = async (req, res, next) => {
 
 
 // дані для графіка
+
 export const getChartData = async (req, res) => {
   try {
     const { data } = await axios.get('https://api.monobank.ua/bank/currency');
+
+    if (!Array.isArray(data)) {
+      return res.status(500).json({ message: 'Invalid response from Monobank' });
+    }
 
     const filtered = data.filter(
       (item) =>
@@ -60,16 +65,19 @@ export const getChartData = async (req, res) => {
     const points = filtered
       .map((item) => {
         const currency = item.currencyCodeA === 840 ? 'USD' : 'EUR';
-        const value = item.rateBuy ?? item.rateCross ?? null;
-
+        const value = item.rateBuy ?? item.rateCross;
         return { currency, value };
       })
       .filter((point) => typeof point.value === 'number' && !isNaN(point.value));
 
+    if (!points.length) {
+      return res.status(500).json({ message: 'No valid chart data available' });
+    }
+
     res.status(200).json({ points });
-  } catch (error) {
-    console.error('Monobank API error:', error.message);
+  } catch {
     res.status(500).json({ message: 'Failed to fetch chart data from Monobank' });
   }
 };
+
 
