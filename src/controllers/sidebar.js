@@ -2,13 +2,6 @@ import axios from 'axios';
 import { UsersCollection } from '../db/models/user.js';
 
 
-
-// Заглушка для валют
-const fallbackRates = {
-  USD: { purchase: 27.55, sale: 27.65 },
-  EUR: { purchase: 30.0, sale: 30.1 },
-};
-
 // Баланс користувача з моделі User
 export const getBalance = async (req, res, next) => {
   try {
@@ -25,12 +18,8 @@ export const getBalance = async (req, res, next) => {
   }
 };
 
-// Дані з Monobank або заглушка
-export const getExchangeRates = async (req, res) => {
-  if (process.env.NODE_ENV === 'development') {
-    return res.status(200).json(fallbackRates);
-  }
-
+// Дані для курсі із MonoBank
+export const getExchangeRates = async (req, res, next) => {
   try {
     const { data } = await axios.get('https://api.monobank.ua/bank/currency');
 
@@ -51,10 +40,11 @@ export const getExchangeRates = async (req, res) => {
 
     res.status(200).json(result);
   } catch (error) {
-    console.error('Monobank API error, using fallback:', error.message);
-    res.status(200).json(fallbackRates);
+    console.error('Monobank API error:', error.message);
+    res.status(500).json({ message: 'Failed to fetch exchange rates from Monobank' });
   }
 };
+
 
 // дані для графіка
 export const getChartData = async (req, res) => {
@@ -67,12 +57,14 @@ export const getChartData = async (req, res) => {
         item.currencyCodeB === 980
     );
 
-    const points = filtered.map((item) => {
-      const currency = item.currencyCodeA === 840 ? 'USD' : 'EUR';
-      const value = item.rateBuy ?? item.rateCross ?? null;
+    const points = filtered
+      .map((item) => {
+        const currency = item.currencyCodeA === 840 ? 'USD' : 'EUR';
+        const value = item.rateBuy ?? item.rateCross ?? null;
 
-      return { currency, value };
-    });
+        return { currency, value };
+      })
+      .filter((point) => typeof point.value === 'number' && !isNaN(point.value));
 
     res.status(200).json({ points });
   } catch (error) {
