@@ -50,34 +50,32 @@ export const getExchangeRates = async (req, res) => {
 };
 
 // Дані для графіка
+
 export const getChartData = async (req, res) => {
   try {
     const { data } = await axios.get('https://api.monobank.ua/bank/currency');
 
     if (!Array.isArray(data)) {
-      return res.status(500).json({ message: 'Invalid response from Monobank' });
+      return res.status(200).json({ points: [] });
     }
 
     const filtered = data.filter(
       (item) =>
         (item.currencyCodeA === 840 || item.currencyCodeA === 978) &&
-        item.currencyCodeB === 980
+        item.currencyCodeB === 980 &&
+        (typeof item.rateBuy === 'number' || typeof item.rateCross === 'number')
     );
 
-    const points = filtered
-      .map((item) => {
-        const currency = item.currencyCodeA === 840 ? 'USD' : 'EUR';
-        const value = item.rateBuy ?? item.rateCross;
-        return { currency, value };
-      })
-      .filter((point) => typeof point.value === 'number' && !isNaN(point.value));
+    const points = filtered.map((item) => {
+      const currency = item.currencyCodeA === 840 ? 'USD' : 'EUR';
+      const value = typeof item.rateBuy === 'number' ? item.rateBuy : item.rateCross;
+      return { currency, value };
+    });
 
-    if (!points.length) {
-      return res.status(500).json({ message: 'No valid chart data available' });
-    }
 
-    res.status(200).json({ points });
+    res.status(200).json({ points: points.length ? points : [] });
   } catch (error) {
-    res.status(500).json({ message: 'Failed to fetch chart data from Monobank' });
+    res.status(200).json({ points: [] });
   }
 };
+
