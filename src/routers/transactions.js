@@ -43,7 +43,6 @@ router.delete(
   isValidId,
   ctrlWrapper(deleteTransactionController),
 );
-router.get('/filter/by-date'
-  , authenticate,
+router.get('/filter/by-date',
   ctrlWrapper(getStatisticsController));
 export default router;

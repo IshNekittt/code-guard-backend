@@ -1,0 +1,52 @@
+
+  tags:
+    - Statistics
+  summary: Get transactions by date range
+  description: Returns a list of user transactions for the specified time period
+  operationId: getStatisticsController
+  security:
+    - bearerAuth: []
+  parameters:
+    - in: query
+      name: start
+      required: true
+      schema:
+        type: string
+        format: date
+      description: 'Start date for the filtering range (format: YYYY-MM-DD)'
+    - in: query
+      name: end
+      required: true
+      schema:
+        type: string
+        format: date
+      description: 'End date for the filtering range (format: YYYY-MM-DD)'
+  responses:
+    '200':
+      description: Get all transactions
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - status
+              - message
+              - data
+            properties:
+              status:
+                type: integer
+                example: 200
+              message:
+                type: string
+                example: Successfully found transactions!
+              data:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '../../components/schemas/transaction.yaml'
+    '401':
+      $ref: '../../components/responses/401.yaml'
