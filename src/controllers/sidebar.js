@@ -18,36 +18,38 @@ export const getBalance = async (req, res, next) => {
   }
 };
 
-// Дані для курсі із MonoBank
-export const getExchangeRates = async (req, res, next) => {
+// Курс валют
+export const getExchangeRates = async (req, res) => {
   try {
     const { data } = await axios.get('https://api.monobank.ua/bank/currency');
 
     const filtered = data.filter(
       (item) =>
         (item.currencyCodeA === 840 || item.currencyCodeA === 978) &&
-        item.currencyCodeB === 980
+        item.currencyCodeB === 980 &&
+        (item.rateBuy || item.rateSell || item.rateCross)
     );
+
+    if (!filtered.length) {
+      return res.status(404).json({ message: 'No exchange rates found' });
+    }
 
     const result = {};
     for (const item of filtered) {
       const currency = item.currencyCodeA === 840 ? 'USD' : 'EUR';
       result[currency] = {
-        purchase: item.rateBuy ?? item.rateCross ?? null,
-        sale: item.rateSell ?? item.rateCross ?? null,
+        purchase: typeof item.rateBuy === 'number' ? item.rateBuy : item.rateCross,
+        sale: typeof item.rateSell === 'number' ? item.rateSell : item.rateCross,
       };
     }
 
     res.status(200).json(result);
   } catch (error) {
-    console.error('Monobank API error:', error.message);
     res.status(500).json({ message: 'Failed to fetch exchange rates from Monobank' });
   }
 };
 
-
-// дані для графіка
-
+// Дані для графіка
 export const getChartData = async (req, res) => {
   try {
     const { data } = await axios.get('https://api.monobank.ua/bank/currency');
@@ -75,9 +77,7 @@ export const getChartData = async (req, res) => {
     }
 
     res.status(200).json({ points });
-  } catch {
+  } catch (error) {
     res.status(500).json({ message: 'Failed to fetch chart data from Monobank' });
   }
 };
-
-
