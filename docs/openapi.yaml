@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
   version: 1.0.0
   title: Code Guard API
-  description:
+  description: >
     API documentation for the Code Guard project. Contains endpoints for authentication,
     sidebar data, transactions, etc.
   license:
@@ -24,17 +24,18 @@ tags:
     description: Data for displaying in the sidebar
   - name: Categories
     description: The list of available categories
+  - name: Statistics
+    description: Operations related to transaction statistics
 
 paths:
   /auth/register:
     post:
       $ref: ../swagger/paths/auth/registration.yaml
+
   /auth/login:
     post:
       $ref: ../swagger/paths/auth/login.yaml
-  # /auth/refresh:
-  #   post:
-  #     $ref: ../swagger/paths/auth/refresh.yaml
+
   /auth/logout:
     post:
       $ref: ../swagger/paths/auth/logout.yaml
@@ -49,11 +50,16 @@ paths:
     post:
       $ref: ../swagger/paths/transactions/post.yaml
 
+  
   /transactions/{id}:
     patch:
       $ref: ../swagger/paths/transactions/{id}/patch.yaml
     delete:
       $ref: ../swagger/paths/transactions/{id}/delete.yaml
+  
+  /transactions/filter/by-date:
+    get:
+      $ref: ../swagger/paths/statistics/get.yaml
 
   /categories:
     get:
@@ -62,6 +68,7 @@ paths:
   /sidebar/balance:
     get:
       $ref: ../swagger/paths/sidebar/balance.yaml
+
   /sidebar/exchange-rates:
     get:
       $ref: ../swagger/paths/sidebar/exchange-rates.yaml

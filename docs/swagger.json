@@ -3,7 +3,7 @@
   "info": {
     "version": "1.0.0",
     "title": "Code Guard API",
-    "description": "API documentation for the Code Guard project. Contains endpoints for authentication, sidebar data, transactions, etc.",
+    "description": "API documentation for the Code Guard project. Contains endpoints for authentication, sidebar data, transactions, etc.\n",
     "license": {
       "name": "Apache 2.0",
       "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
@@ -35,6 +35,10 @@
     {
       "name": "Categories",
       "description": "The list of available categories"
+    },
+    {
+      "name": "Statistics",
+      "description": "Operations related to transaction statistics"
     }
   ],
   "paths": {
@@ -595,6 +599,87 @@
         }
       }
     },
+    "/transactions/filter/by-date": {
+      "get": {
+        "tags": [
+          "Statistics"
+        ],
+        "summary": "Get transactions by date range",
+        "description": "Returns a list of user transactions for the specified time period",
+        "operationId": "getStatisticsController",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "start",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            },
+            "description": "Start date for the filtering range (format: YYYY-MM-DD)"
+          },
+          {
+            "in": "query",
+            "name": "end",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            },
+            "description": "End date for the filtering range (format: YYYY-MM-DD)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get all transactions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "message",
+                    "data"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Successfully found transactions!"
+                    },
+                    "data": {
+                      "type": "object",
+                      "required": [
+                        "data"
+                      ],
+                      "properties": {
+                        "data": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/transaction"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          }
+        }
+      }
+    },
     "/categories": {
       "get": {
         "tags": [
@@ -672,118 +757,6 @@
           },
           "404": {
             "$ref": "#/components/responses/404"
-          }
-        }
-      }
-    },
-    "/sidebar/balance": {
-      "get": {
-        "tags": [
-          "Sidebar"
-        ],
-        "summary": "Get user balance",
-        "description": "Returns the user's balance from the User model.",
-        "operationId": "getBalance",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Balance retrieved successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "balance": {
-                      "type": "number",
-                      "format": "float",
-                      "example": 24000
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "401": {
-            "$ref": "#/components/responses/401-2"
-          },
-          "500": {
-            "$ref": "#/components/responses/500"
-          }
-        }
-      }
-    },
-    "/sidebar/exchange-rates": {
-      "get": {
-        "tags": [
-          "Sidebar"
-        ],
-        "summary": "Get exchange rates from Monobank",
-        "description": "Returns current exchange rates for USD and EUR from Monobank API.",
-        "operationId": "getRates",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Exchange rates retrieved successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ExchangeRates"
-                }
-              }
-            }
-          },
-          "400": {
-            "$ref": "#/components/responses/400-2"
-          },
-          "401": {
-            "$ref": "#/components/responses/401-2"
-          },
-          "500": {
-            "$ref": "#/components/responses/500"
-          }
-        }
-      }
-    },
-    "/sidebar/chart": {
-      "get": {
-        "tags": [
-          "Sidebar"
-        ],
-        "summary": "Get chart data (currency trend)",
-        "description": "Returns currency chart data from Monobank for visual trend display.",
-        "operationId": "getChart",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Chart points successfully retrieved",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Chart"
-                }
-              }
-            }
-          },
-          "400": {
-            "$ref": "#/components/responses/400-2"
-          },
-          "401": {
-            "$ref": "#/components/responses/401-2"
-          },
-          "500": {
-            "$ref": "#/components/responses/500"
           }
         }
       }
@@ -1101,110 +1074,6 @@
                 "data": {
                   "type": "string",
                   "example": "Email in use"
-                }
-              }
-            }
-          }
-        }
-      },
-      "500": {
-        "description": "Internal server error",
-        "content": {
-          "application/json": {
-            "schema": {
-              "type": "object",
-              "required": [
-                "status",
-                "message"
-              ],
-              "properties": {
-                "status": {
-                  "type": "integer",
-                  "example": 500
-                },
-                "message": {
-                  "type": "string",
-                  "example": "Something went wrong on the server"
-                }
-              }
-            }
-          }
-        }
-      },
-      "401-2": {
-        "description": "Unauthorized",
-        "content": {
-          "application/json": {
-            "schema": {
-              "type": "object",
-              "required": [
-                "status",
-                "message"
-              ],
-              "properties": {
-                "status": {
-                  "type": "integer",
-                  "example": 401
-                },
-                "message": {
-                  "type": "string",
-                  "example": "Unauthorized access"
-                }
-              }
-            }
-          }
-        }
-      },
-      "400-2": {
-        "description": "Bad request",
-        "content": {
-          "application/json": {
-            "schema": {
-              "type": "object",
-              "required": [
-                "status",
-                "message"
-              ],
-              "properties": {
-                "status": {
-                  "type": "integer",
-                  "example": 400
-                },
-                "message": {
-                  "type": "string",
-                  "example": "\"amount\" must be a number"
-                },
-                "data": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "required": [
-                      "message",
-                      "path",
-                      "type"
-                    ],
-                    "properties": {
-                      "message": {
-                        "type": "string",
-                        "example": "\"amount\" must be a number"
-                      },
-                      "path": {
-                        "type": "array",
-                        "items": {
-                          "type": "string",
-                          "example": "amount"
-                        }
-                      },
-                      "type": {
-                        "type": "string",
-                        "example": "number.base"
-                      },
-                      "context": {
-                        "type": "object",
-                        "additionalProperties": true
-                      }
-                    }
-                  }
                 }
               }
             }
