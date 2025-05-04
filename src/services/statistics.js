@@ -1,9 +1,12 @@
 import { TransactionsCollection } from '../db/models/transaction.js';
 
-export const getStatisticsSercices = async (userId, start, end) => {
-  const startDate = new Date(`${start}T00:00:00.000Z`);
-  const endDate = new Date(`${end}T23:59:59.999Z`);
+export const getStatisticsSercices = async (userId, start) => {
+ 
+  const [year, month] = start.split("-").map(Number);
 
+  const startDate = new Date(year, month, 1);
+  const endDate = new Date(year, month +1,0);
+ 
   const transactions = await TransactionsCollection.find({
     userId,
     date: {

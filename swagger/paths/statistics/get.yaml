@@ -16,7 +16,7 @@
       description: 'Start date for the filtering range (format: YYYY-MM-DD)'
     - in: query
       name: end
-      required: true
+      required: false
       schema:
         type: string
         format: date
